@@ -41,6 +41,8 @@ The footprint of this project is quite minimal. The following resources are crea
 - 1 S3 Bucket
 - 1 SQS queue
 
+<img src="./docs/diagram.png" alt="infrastructure diagram" />
+
 ### Invocation
 
 After successful deployment, you can call the created application via HTTP or simply invoke it using the sample testing events.
