@@ -1,0 +1,13 @@
+{
+  "Records": [
+    {
+      "body": {
+        "id": "user_1",
+        "text": "test"
+      },
+      "attributes": {
+        "MessageGroupId": "article"
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "pathParameters": {
+    "type": "article"
+  },
+  "body": {
+    "id": "123",
+    "text": "jane doe"
+  }
+}

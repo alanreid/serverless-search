@@ -1,0 +1,8 @@
+{
+  "pathParameters": {
+    "type": "article"
+  },
+  "queryStringParameters": {
+    "query": "doe"
+  }
+}

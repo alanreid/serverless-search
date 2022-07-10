@@ -1,0 +1,6 @@
+{
+  "body": {
+    "type": "article",
+    "searchableFields": ["text"]
+  }
+}

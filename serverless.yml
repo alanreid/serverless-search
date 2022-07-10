@@ -1,0 +1,113 @@
+service: serverless-search
+frameworkVersion: '3'
+
+functions:
+  createDocument:
+    handler: functions/createDocument/index.handler
+    events:
+      - httpApi:
+          path: /document
+          method: post
+
+  indexDocument:
+    handler: functions/indexDocument/index.handler
+    events:
+      - httpApi:
+          path: /document/{type}
+          method: post
+
+  processDocuments:
+    handler: functions/processDocuments/index.handler
+    reservedConcurrency: 1
+    events:
+      - sqs:
+          batchSize: 10
+          arn:
+            Fn::GetAtt:
+              - IndexQueue
+              - Arn
+
+  search:
+    handler: functions/searchDocuments/index.handler
+    events:
+      - httpApi:
+          path: /document/{type}/search
+          method: get
+
+resources:
+  Resources:
+    IndexQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        FifoQueue: true
+    IndexBucket:
+      Type: "AWS::S3::Bucket"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-central-1
+  memorySize: 1024
+
+  logs:
+    restApi:
+      fullExecutionData: false
+    httpApi: true
+    frameworkLambda: false
+
+  tracing:
+    apiGateway: true
+    lambda: true
+
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    QUEUE_URL:
+      Fn::GetAtt:
+        - IndexQueue
+        - QueueUrl
+    INDEX_BUCKET_NAME:
+      Ref: IndexBucket
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:PutObject
+      Resource:
+        Fn::Join:
+            - ''
+            - - Fn::GetAtt:
+                - IndexBucket
+                - Arn
+              - '/*'
+
+    - Effect: Allow
+      Action:
+        - sqs:sendMessage
+      Resource:
+        Fn::GetAtt:
+          - IndexQueue
+          - Arn
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: false
+    target: 'es2020'
+    external:
+      - 'aws-sdk'
+      - elasticlunr
+
+  s3-encryption:
+    buckets:
+      IndexBucket:
+        SSEAlgorithm: AES256
+
+plugins:
+  - serverless-esbuild
+  - serverless-s3-encryption
+
+package:
+  individually: true
+
