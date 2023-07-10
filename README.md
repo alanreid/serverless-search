@@ -1,6 +1,6 @@
 
 # Serverless Search
-This project is a poor man's Elasticsearch. It's a simple and serverless full-text search engine based in [ElasticLunr](https://github.com/weixsong/elasticlunr.js). 
+A simple and serverless full-text search engine based in [ElasticLunr](https://github.com/weixsong/elasticlunr.js). 
 
 
 ## Getting started
