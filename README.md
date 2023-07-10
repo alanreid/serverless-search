@@ -13,7 +13,7 @@ $ cd serverless-search
 $ npm run deploy
 ```
 
-After deploying, you should see output similar to:
+After deploying, you should see an output similar to the one below:
 
 ```bash
 Deploying serverless-search to stage dev (eu-central-1)
